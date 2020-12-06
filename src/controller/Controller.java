@@ -1,25 +1,61 @@
 package controller;
 
-import interpreter.Espressione;
-import interpreter.ExpAndSpecifica;
-import interpreter.ExpOrSpecifica;
-import interpreter.ExpTerminaleGenerale;
+import interpreter.*;
+import javafx.event.ActionEvent;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 
 public class Controller {
 
 
+    public TextField campoExp1;
+    public TextField campoExp2;
+    public Circle cerchioOr;
+    public Circle cerchioAnd;
+    public Circle cerchioNot;
+    public Button valutaButton;
+    Espressione exp1;
+    Espressione exp2;
+    Espressione expOr;
+    Espressione expAnd;
+    Espressione expNot;
 
     public void initialize(){
-        Espressione simone = new ExpTerminaleGenerale("simone");
-        Espressione virgin = new ExpTerminaleGenerale("virgin");
 
-        Espressione isVirgin = new ExpOrSpecifica(simone, virgin);
-        Espressione absVirgin = new ExpAndSpecifica(simone, virgin);
+        exp1 = new ExpTerminaleGenerale(campoExp1.getText());
+        exp2 = new ExpTerminaleGenerale(campoExp2.getText());
 
-        System.out.println(isVirgin.interpreter("simone"));
+        expOr = new ExpOrSpecifica(exp1,exp2);
+        expAnd =new ExpAndSpecifica(exp1,exp2);
+        expNot = new ExpNotSpecific(exp1);
 
-        //E' giusto se la stringa contiene entrambi i valori
-        System.out.println(absVirgin.interpreter("simone, virgin"));
+    }
+
+    public void valuta(ActionEvent actionEvent) {
+        cerchioAnd.setFill(Color.WHITE);
+        cerchioOr.setFill (Color.WHITE);
+        cerchioNot.setFill(Color.WHITE);
+
+        if(expOr.interpreter(campoExp1.getText()))
+            cerchioOr.setFill(Color.GREEN);
+
+        else
+            cerchioOr.setFill(Color.RED);
+
+        if(expAnd.interpreter(campoExp1.getText() + campoExp2.getText()))
+            cerchioAnd.setFill(Color.GREEN);
+
+        else
+            cerchioAnd.setFill(Color.RED);
+
+        if(expNot.interpreter(campoExp1.getText()))
+            cerchioNot.setFill(Color.GREEN);
+
+        else
+            cerchioNot.setFill(Color.RED);
+
 
     }
 }
